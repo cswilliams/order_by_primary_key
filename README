@@ -1,0 +1,5 @@
+This gem is a rails plugin for adding an ORDER BY PRIMARY KEY default scope to every model and to any eager loaded joins.  It also reverses the precedence of multiple order by conditions so they behave in a more object oriented fashion and allows for our default ORDER BY PRIMARY KEY scope to have the lowest precedence.
+
+This gem is useful if you need to transition from MySQL to a database that does not guarantee order by primary key unless requested (e.g. clustrix, postgres, etc.).  It may be less work to use this gem than fix all of the places in your application code and tests where you may be assuming order even though you didn't specify it.
+
+Use at your own risk, only tested on Rails 3.0.10.
