@@ -7,9 +7,13 @@
 module ActiveRecord
   module QueryMethods
     def order(*args)
+      return self if args.blank?
+      
       relation = clone
-      relation.order_values = args.flatten + relation.order_values unless args.blank?
+      relation.order_values = args.concat relation.order_values
       relation
     end
+    
+    
   end
 end

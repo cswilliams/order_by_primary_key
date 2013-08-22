@@ -17,6 +17,7 @@ module ActiveRecord
 
       r = r.with_default_scope if r.default_scoped? && r.klass != klass
 
+      
       Relation::ASSOCIATION_METHODS.each do |method|
         value = r.send(:"#{method}_values")
 
@@ -34,7 +35,7 @@ module ActiveRecord
         merged_relation.send(:"#{method}_values=", merged_relation.send(:"#{method}_values") + value) if value.present?
       end
       
-      merged_relation.order_values = merged_relation.order_values + r.order_values if r.order_values.present?
+      merged_relation.order_values = r.order_values + merged_relation.order_values if r.order_values.present?
 
       merged_relation.joins_values += r.joins_values
 
@@ -68,7 +69,7 @@ module ActiveRecord
 
       # Apply scope extension modules
       merged_relation.send :apply_modules, r.extensions
-
+      
       merged_relation
     end
   end
