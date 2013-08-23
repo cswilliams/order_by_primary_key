@@ -24,12 +24,17 @@ module OrderByPrimaryKeyEngine
           default_scope :order => a_scope
        
           #move the default scope to the end if there are other order by default scopes on this model already
-          klass.default_scopes.each do |relation|
-            if relation.is_a?(ActiveRecord::Relation)              
+          if ActiveRecord::VERSION::MAJOR == 3 && ActiveRecord::VERSION::MINOR == 0
+            klass.default_scoping.each do |relation|
               if relation.order_values.size > 1 && relation.order_values.include?(a_scope)
                 relation.order_values.delete(a_scope)
                 relation.order_values = relation.order_values + [a_scope]
               end
+            end
+          elsif ActiveRecord::VERSION::MAJOR == 3 && ActiveRecord::VERSION::MINOR == 1
+            if klass.default_scopes.size > 1
+              primary_key_scope = klass.default_scopes.delete(:order => a_scope)
+              klass.default_scopes = [primary_key_scope] + klass.default_scopes
             end
           end          
         end
