@@ -8,7 +8,11 @@ module ActiveRecord
     
        for association in join_dependency.join_associations
          relation = association.join_relation(relation)
-         association.klass.default_scoping.each do |default_scope_relation| 
+         association.klass.default_scoping.each do |default_scope_relation|
+           p '========='
+           p default_scope_relation.order_values
+           p relation.order_values
+           p '[end]'
            relation.order_values += default_scope_relation.order_values
          end
        end

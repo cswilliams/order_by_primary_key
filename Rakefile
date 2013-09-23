@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Adds a default scope order by primary key to all models and patches Rails so the default scope is always the lowest order priority. It also patches rails so multiple order bys behave in a more OOP fashion.}
   gem.description = %Q{Adds a default scope order by primary key to all models and patches Rails so the default scope is always the lowest order priority. It also patches rails so multiple order bys behave in a more OOP fashion.}
   gem.email = "cswilliams@gmail.com"
-  gem.authors = ["Chris Williams"]
+  gem.authors = ["Chris Williams", 'Eugene Kondratyuk', 'Anatoliy Varanitsa']
   gem.require_paths = ["lib"]
 end
 Jeweler::RubygemsDotOrgTasks.new
