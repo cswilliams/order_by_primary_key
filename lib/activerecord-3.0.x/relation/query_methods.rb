@@ -25,14 +25,26 @@ module ActiveRecord
     private
 
     def apply_order_default_scopes(relation, *args)
-      args.each do |item|
-        next if item.class != Symbol
+      return relation if args.empty?
 
-        item.to_s.singularize.camelize.constantize.default_scoping.each do |scope|
+      all_joins_reflections = relation.reflect_on_all_associations
+      args.each do |item|
+        arg_reflection = get_reflection_by_name all_joins_reflections, item
+        next unless arg_reflection
+
+        arg_reflection.klass.default_scoping.each do |scope|
           relation.order_values += scope.is_a?(Hash) ? apply_finder_options(scope).order_values : scope.order_values
         end
       end
+
       relation
+    end
+
+    def get_reflection_by_name(reflections, name)
+      return nil if name.class != Symbol
+      reflection_index = reflections.rindex { |ref| ref.name.to_s == name.to_s }
+      return nil unless reflection_index
+      reflections[reflection_index]
     end
 
   end
