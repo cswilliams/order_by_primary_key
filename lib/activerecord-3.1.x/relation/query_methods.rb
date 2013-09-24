@@ -18,22 +18,37 @@ module ActiveRecord
       return self if args.compact.blank?
 
       relation = clone
+
       args.flatten!
       relation.joins_values += args
+
+      apply_order_default_scopes(relation, *args)
+    end
+
+    private
+
+    def apply_order_default_scopes(relation, *args)
+      return relation if args.empty?
+
+      all_joins_reflections = relation.reflect_on_all_associations
       args.each do |item|
-        if item.class == Symbol
-          item.to_s.singularize.camelize.constantize.default_scopes.each do |scope|
-            if scope.is_a?(Hash)
-              relation.order_values +=  apply_finder_options(scope).order_values
-            else
-              relation.order_values +=  scope.order_values
-            end
-          end
+        arg_reflection = get_reflection_by_name all_joins_reflections, item
+        next unless arg_reflection
+
+        arg_reflection.klass.default_scopes.each do |scope|
+          relation.order_values += scope.is_a?(Hash) ? apply_finder_options(scope).order_values : scope.order_values
         end
       end
+
       relation
     end
-    
+
+    def get_reflection_by_name(reflections, name)
+      return nil if name.class != Symbol
+      reflection_index = reflections.rindex { |ref| ref.name.to_s == name.to_s }
+      return nil unless reflection_index
+      reflections[reflection_index]
+    end
     
   end
 end

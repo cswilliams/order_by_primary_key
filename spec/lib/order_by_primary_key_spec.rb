@@ -6,14 +6,14 @@ describe "OrderByPrimaryKeyEngine" do
 
     context 'has a default scope by primary key' do
 
-      it { User.limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" ORDER BY users.id LIMIT 1" }
+      it { User.limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\"  ORDER BY users.id LIMIT 1" }
 
       context 'and another order' do
-        it { User.order(:email).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" ORDER BY email, users.id LIMIT 1" }
+        it { User.order(:email).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\"  ORDER BY email, users.id LIMIT 1" }
       end
 
       context 'and 2 orders' do
-        it { User.order(:email).order(:name).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" ORDER BY name, email, users.id LIMIT 1" }
+        it { User.order(:email).order(:name).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\"  ORDER BY name, email, users.id LIMIT 1" }
       end
 
       context 'in joins' do
@@ -44,11 +44,11 @@ describe "OrderByPrimaryKeyEngine" do
       end
 
       context 'and another scope by order which be the first' do
-        it { User.name_sort.to_sql.should == "SELECT \"users\".* FROM \"users\" ORDER BY name, users.id" }
+        it { User.name_sort.to_sql.should == "SELECT \"users\".* FROM \"users\"  ORDER BY name, users.id" }
       end
 
       context 'and has reorder' do
-        it { User.reorder(:name).to_sql.should == "SELECT \"users\".* FROM \"users\" ORDER BY name" }
+        it { User.reorder(:name).to_sql.should == "SELECT \"users\".* FROM \"users\"  ORDER BY name" }
         it { User.reorder(:name).order(:id).to_sql.should == "SELECT \"users\".* FROM \"users\" ORDER BY id, name" }
       end
 

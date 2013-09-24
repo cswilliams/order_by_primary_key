@@ -5,10 +5,10 @@ group :development do
 end
 
 group :test do
-  gem 'rails', '~> 3.0.17'
+  gem 'rails', '~> 3.1.12'
   gem 'rspec', "~> 2.11.0", :require => nil
   gem 'rspec-rails', "~> 2.11.0", :require => nil
   gem 'sqlite3-ruby'
-  gem 'activerecord', '3.0.17'
-  gem 'database_cleaner', '>= 0.7.2', require: false
+  gem 'activerecord', '3.1.12'
+  gem 'database_cleaner', '0.9.1', require: false
 end
