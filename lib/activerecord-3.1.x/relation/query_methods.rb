@@ -13,6 +13,26 @@ module ActiveRecord
       relation.order_values = args.concat relation.order_values
       relation
     end
+
+    def joins(*args)
+      return self if args.compact.blank?
+
+      relation = clone
+      args.flatten!
+      relation.joins_values += args
+      args.each do |item|
+        if item.class == Symbol
+          item.to_s.singularize.camelize.constantize.default_scopes.each do |scope|
+            if scope.is_a?(Hash)
+              relation.order_values +=  apply_finder_options(scope).order_values
+            else
+              relation.order_values +=  scope.order_values
+            end
+          end
+        end
+      end
+      relation
+    end
     
     
   end

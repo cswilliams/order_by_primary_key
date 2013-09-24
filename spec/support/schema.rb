@@ -12,6 +12,8 @@ ActiveRecord::Schema.define do
     t.string    :title
     t.string    :message
     t.integer   :user_id
+    t.integer   :topic_id
+    t.boolean   :enabled
     t.timestamps
   end
 
