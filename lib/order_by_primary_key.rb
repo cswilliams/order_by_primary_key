@@ -13,15 +13,4 @@ class ActiveRecord::Base
     @default_scopes
   end
 
-  def self.default_scope(scope = {})
-    scope = Proc.new if block_given?
-    def_scopes = self.default_scopes
-    if def_scopes.length > 0
-      primary_key_scope = def_scopes.pop
-      self.default_scopes = def_scopes + [scope] + [primary_key_scope]
-    else
-      self.default_scopes = def_scopes + [scope]
-    end
-  end
-
 end

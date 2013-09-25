@@ -7,13 +7,9 @@ module ActiveRecord
     def apply_join_dependency(relation, join_dependency)
       join_dependency.join_associations.each do |association|
         relation = association.join_relation(relation)
-        
+
         association.reflection.klass.default_scopes.each do |scope|
-          if scope.is_a?(Hash)
-            relation.order_values +=  apply_finder_options(scope).order_values
-          else
-            relation.order_values +=  scope.order_values
-          end
+          relation.order_values += (scope.is_a?(Hash) ? apply_finder_options(scope) : scope).order_values
         end
       end
 

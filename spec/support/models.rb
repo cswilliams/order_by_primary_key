@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :posts
 
-  scope :name_sort, order(:name)
+  scope :name_sort, order(:name).order(:id)
 end
 
 class Post < ActiveRecord::Base
