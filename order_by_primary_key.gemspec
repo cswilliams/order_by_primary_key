@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris Williams", "Eugene Kondratyuk", "Anatoliy Varanitsa"]
-  s.date = "2013-09-24"
+  s.date = "2013-09-25"
   s.description = "Adds a default scope order by primary key to all models and patches Rails so the default scope is always the lowest order priority. It also patches rails so multiple order bys behave in a more OOP fashion."
   s.email = "cswilliams@gmail.com"
   s.extra_rdoc_files = [
