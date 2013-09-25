@@ -19,9 +19,13 @@ describe "OrderByPrimaryKeyEngine" do
       context 'in joins' do
         it { User.joins(:posts).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.id, title, posts.id LIMIT 1" }
 
+        it { User.joins(:posts).order('users.login').limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
+
+        it { User.order('users.login').joins(:posts).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
+
         it { Forum.joins(:posts).limit(1).to_sql.should == "SELECT  \"forums\".* FROM \"forums\" INNER JOIN \"topics\" ON \"forums\".\"id\" = \"topics\".\"forum_id\" INNER JOIN \"posts\" ON \"posts\".\"topic_id\" = \"topics\".\"id\" ORDER BY forums.description, forums.id, title, posts.id LIMIT 1" }
 
-        it { Forum.joins(:enabled_posts).limit(1).to_sql.should == "SELECT  \"forums\".* FROM \"forums\" INNER JOIN \"topics\" ON \"forums\".\"id\" = \"topics\".\"forum_id\" INNER JOIN \"posts\" ON \"posts\".\"topic_id\" IS NULL AND \"posts\".\"enabled\" = 't' ORDER BY forums.description, forums.id, title, posts.id LIMIT 1" }
+        it { Forum.joins(:enabled_posts).limit(1).to_sql.should == "SELECT  \"forums\".* FROM \"forums\" INNER JOIN \"topics\" ON \"forums\".\"id\" = \"topics\".\"forum_id\" INNER JOIN \"posts\" ON \"posts\".\"topic_id\" = \"topics\".\"id\" AND \"posts\".\"enabled\" = 't' ORDER BY forums.description, forums.id, title, posts.id LIMIT 1" }
 
         context 'in eager loading joins' do
           let!(:forum1) { Forum.create!(description: '2 - Last in result') }
@@ -44,7 +48,7 @@ describe "OrderByPrimaryKeyEngine" do
       end
 
       context 'and another scope by order which be the first' do
-        it { User.name_sort.to_sql.should == "SELECT \"users\".* FROM \"users\" ORDER BY name, users.id" }
+        it { User.name_sort.to_sql.should == "SELECT \"users\".* FROM \"users\" ORDER BY id, name, users.id" }
       end
 
       context 'and has reorder' do

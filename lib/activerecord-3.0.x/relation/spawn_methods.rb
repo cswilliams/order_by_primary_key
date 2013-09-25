@@ -32,13 +32,8 @@ module ActiveRecord
       end
 
       order_value = r.order_values
-      if order_value.present?
-        if r.reorder_flag
-          merged_relation.order_values = order_value
-        else
-          merged_relation.order_values = order_value + merged_relation.order_values
-        end
-      end
+
+      merged_relation.order_values = (r.reorder_flag ? order_value : order_value + merged_relation.order_values) if order_value.present?
 
       merged_relation = merged_relation.joins(r.joins_values)
 

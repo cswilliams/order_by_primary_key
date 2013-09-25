@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :posts
 
-  scope :name_sort, order(:name)
+  scope :name_sort, order(:name).order(:id)
 end
 
 class Post < ActiveRecord::Base
@@ -14,7 +14,7 @@ class Forum < ActiveRecord::Base
   belongs_to :user
   has_many :topics
   has_many :posts, through: :topics
-  has_many :enabled_posts, class_name: 'Post', foreign_key: 'post_id', through: :topics, source: :posts, conditions: { enabled: true }
+  has_many :enabled_posts, class_name: 'Post', through: :topics, source: :posts, conditions: { enabled: true }
 
   default_scope order('forums.description')
 end
