@@ -16,10 +16,11 @@ describe "OrderByPrimaryKeyEngine" do
 
       context 'in joins' do
 
-        context 'tttt' do
-          it { User.joins(:posts).order('users.login').limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
-          it { User.order('users.login').joins(:posts).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
-        end
+        it { User.joins(:posts).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.id, title, posts.id LIMIT 1" }
+
+        it { User.joins(:posts).order('users.login').limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
+
+        it { User.order('users.login').joins(:posts).limit(1).to_sql.should == "SELECT  \"users\".* FROM \"users\" INNER JOIN \"posts\" ON \"posts\".\"user_id\" = \"users\".\"id\" ORDER BY users.login, users.id, title, posts.id LIMIT 1" }
 
         it { Forum.joins(:posts).limit(1).to_sql.should == "SELECT  \"forums\".* FROM \"forums\" INNER JOIN \"topics\" ON \"topics\".\"forum_id\" = \"forums\".\"id\" INNER JOIN \"posts\" ON \"posts\".\"topic_id\" = \"topics\".\"id\" ORDER BY forums.description, forums.id, title, posts.id LIMIT 1" }
 
